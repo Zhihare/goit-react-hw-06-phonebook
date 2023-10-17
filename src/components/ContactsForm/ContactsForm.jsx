@@ -5,14 +5,10 @@ import { ContainerContactsForm, ContainerContactsLabel, ConteinerContactsButton,
 export const ContactsForm = ({ handleAddContacts }) => {
 	const [name, setName] = useState('');
 	const [number, setNumber] = useState('');
-	// state = {
-	// 	name: '',
-	// 	number: '',
-	// }
+
 
 	const handleNameChenge = event => {
 		setName(event.target.value)
-		// this.setState({ [event.target.name]: event.target.value })
 	}
 
 	const handleNumberChenge = event => {
