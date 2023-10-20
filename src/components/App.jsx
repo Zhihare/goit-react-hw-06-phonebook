@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { GoSun } from 'react-icons/go';
 import { HiMoon } from 'react-icons/hi';
 import { ContactsForm } from "./ContactsForm/ContactsForm";
@@ -10,40 +9,25 @@ import { ModalDelete } from "./ModalDelete/ModalDelete";
 import { ThemeProvider } from "styled-components";
 import { DarkTheme, LightTheme } from "constants/DarkMode";
 import { nanoid } from "nanoid";
+import { useDispatch, useSelector } from "react-redux";
+import { setContacts, setDeleteContacts, setFilter, setModal, setModalData, setModalDelete, setModalDeleteData, setTheme } from "redax/contactsReduser";
 
 
 export function App() {
 
-  const [contacts, setContacts] = useState(() => {
-    const savedContacts = localStorage.getItem('contacts');
-    return savedContacts ? JSON.parse(savedContacts) : [];
-  });
+  const contacts = useSelector((state) => state.contacts.contacts);
+  const filter = useSelector((state) => state.contacts.filter);
+  const modal = useSelector((state) => state.contacts.modal);
+  const modalData = useSelector((state) => state.contacts.modalData);
+  const modalDelete = useSelector((state) => state.contacts.modalDelete);
+  const modalDeleteData = useSelector((state) => state.contacts.modalDeleteData);
+  const themes = useSelector((state) => state.contacts.themes)
 
-  const [filter, setFilter] = useState('');
-  const [modal, setModal] = useState(false);
-  const [modalData, setModalData] = useState(null);
-  const [modalDelete, setModalDelete] = useState(false);
-  const [modalDeleteData, setModalDeleteData] = useState(null);
-
-  const [themes, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme ? JSON.parse(savedTheme) : LightTheme;
-  });
-
-
-  useEffect(() => {
-    const stringifiedTheme = JSON.stringify(themes);
-    localStorage.setItem('theme', stringifiedTheme);
-
-    const stringifiedContacts = JSON.stringify(contacts);
-    localStorage.setItem('contacts', stringifiedContacts);
-
-  }, [contacts, themes])
-
+  const dispatch = useDispatch();
 
   const onOpenModal = (modalData) => {
-    setModal(true);
-    setModalData(modalData);
+    dispatch(setModal(true));
+    dispatch(setModalData(modalData));
   }
 
 
@@ -65,10 +49,7 @@ export function App() {
     };
 
     onOpenModal(name);
-    setContacts(prevState => [
-      ...prevState,
-      newContact,
-    ]);
+    dispatch(setContacts(newContact));
 
     reset();
   };
@@ -82,44 +63,42 @@ export function App() {
   };
 
   const reset = () => {
-    setFilter('');
+    dispatch(setFilter(''));
   };
 
 
   const changeFilter = e => {
-    setFilter(e.currentTarget.value.toLowerCase());
+    dispatch(setFilter(e.currentTarget.value.toLowerCase));
   };
 
 
   const handleDelete = contactName => {
-    setContacts(
-      contacts.filter(contact => contact.name !== contactName),
-    );
+    dispatch(setDeleteContacts(contactName));
   }
 
   const onCloseModal = () => {
-    setModal(false);
-    setModalData(null);
+    dispatch(setModal(false));
+    dispatch(setModalData(null));
   }
 
   const onOpenModalDelete = (modalDataDelete) => {
-    setModalDelete(true);
-    setModalDeleteData(modalDataDelete);
+    dispatch(setModalDelete(true));
+    dispatch(setModalDeleteData(modalDataDelete));
   }
 
   const onCloseModalDelete = () => {
-    setModalDelete(false);
-    setModalDeleteData(null);
+    dispatch(setModalDelete(false));
+    dispatch(setModalDeleteData(null));
   }
 
 
   const changeTheme = () => {
     if (themes === LightTheme) {
-      setTheme(DarkTheme);
+      dispatch(setTheme(DarkTheme));
       return;
     }
     if (themes !== LightTheme) {
-      setTheme(LightTheme);
+      dispatch(setTheme(LightTheme));
       return;
     }
   };
