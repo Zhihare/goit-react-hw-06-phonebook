@@ -1,3 +1,4 @@
+
 import { GoSun } from 'react-icons/go';
 import { HiMoon } from 'react-icons/hi';
 import { ContactsForm } from "./ContactsForm/ContactsForm";
@@ -24,6 +25,7 @@ export function App() {
   const themes = useSelector((state) => state.contacts.themes)
 
   const dispatch = useDispatch();
+
 
   const onOpenModal = (modalData) => {
     dispatch(setModal(true));
@@ -68,7 +70,7 @@ export function App() {
 
 
   const changeFilter = e => {
-    dispatch(setFilter(e.currentTarget.value.toLowerCase));
+    dispatch(setFilter(e.currentTarget.value.toLowerCase()));
   };
 
 

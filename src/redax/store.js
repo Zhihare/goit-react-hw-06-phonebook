@@ -17,6 +17,7 @@ const contactsConfig = {
 	key: 'contacts',
 	storage,
 	whitelist: ['contacts', 'themes'],
+	blacklist: ['filter'],
 };
 
 
