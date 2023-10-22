@@ -1,8 +1,18 @@
 import React, { useEffect } from 'react'
 import { Overlay, ModalWindow, ModalTitle } from './ModalStyle'
 import { ConteinerContactsButton } from 'components/ContactsForm/CotactsFormStyle';
+import { useDispatch, useSelector } from 'react-redux';
+import { setModal, setModalData } from 'redax/contactsReduser';
 
-export function Modal({ onCloseModal, newContactName }) {
+export function Modal() {
+	const modalData = useSelector((state) => state.contacts.modalData);
+	const dispatch = useDispatch();
+
+	const onCloseModal = () => {
+		dispatch(setModal(false));
+		dispatch(setModalData(null));
+	}
+
 	const onKeyDown = event => {
 		if (event.code === 'Escape') {
 			onCloseModal();
@@ -26,7 +36,7 @@ export function Modal({ onCloseModal, newContactName }) {
 	return (
 		<Overlay onClick={onOverlayClick}>
 			<ModalWindow>
-				<ModalTitle>New contact {newContactName} added to the list</ModalTitle>
+				<ModalTitle>New contact {modalData} added to the list</ModalTitle>
 				<ConteinerContactsButton type="button"
 
 					style={{

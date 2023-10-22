@@ -2,11 +2,24 @@ import React from 'react'
 
 import { ConteinerContactsButton } from 'components/ContactsForm/CotactsFormStyle';
 import { ModalTitle, ModalWindow, Overlay } from 'components/Modal/ModalStyle';
+import { setDeleteContacts, setModalDelete, setModalDeleteData } from 'redax/contactsReduser';
+import { useDispatch, useSelector } from 'react-redux';
 
-export function ModalDelete({ handleDelete, onCloseModalDelete, deleteContact }) {
+export function ModalDelete() {
+	const modalDeleteData = useSelector((state) => state.contacts.modalDeleteData);
+	const dispatch = useDispatch();
+
+	const handleDelete = contactName => {
+		dispatch(setDeleteContacts(contactName));
+	}
+
+	const onCloseModalDelete = () => {
+		dispatch(setModalDelete(false));
+		dispatch(setModalDeleteData(null));
+	}
 
 	const deleteNumber = () => {
-		handleDelete(deleteContact);
+		handleDelete(modalDeleteData);
 		onCloseModalDelete();
 	}
 
@@ -16,7 +29,7 @@ export function ModalDelete({ handleDelete, onCloseModalDelete, deleteContact })
 	return (
 		<Overlay>
 			<ModalWindow>
-				<ModalTitle>Are you sure you want to delete {deleteContact}?</ModalTitle>
+				<ModalTitle>Are you sure you want to delete {modalDeleteData}?</ModalTitle>
 				<ConteinerContactsButton type="button"
 					style={{
 						width: '150px', height: '60px',
